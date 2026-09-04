@@ -1,0 +1,23 @@
+name: Propuesta de mejora
+description: Sugiere una mejora concreta para Guitar Practice Lab.
+title: "[Idea]: "
+labels: [enhancement]
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problema
+      description: ¿Qué necesidad de práctica o uso resolvería?
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Propuesta
+      description: Describe el comportamiento esperado, no solo la interfaz.
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternativas consideradas
