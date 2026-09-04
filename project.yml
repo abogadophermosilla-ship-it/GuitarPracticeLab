@@ -1,0 +1,79 @@
+name: GuitarPracticeLab
+options:
+  bundleIdPrefix: com.guitarpracticelab
+  deploymentTarget:
+    macOS: "14.0"
+targets:
+  GuitarPracticeLab-Mac:
+    type: application
+    platform: macOS
+    sources:
+      - path: .
+        excludes:
+          - "project.yml"
+          - "*.xcodeproj"
+          - "GuitarPracticeLab.xcodeproj/**"
+          - "Resources/Info-Mac.plist"
+          - "Resources/GuitarPracticeLab-Mac.entitlements"
+          - "Resources/Assets.xcassets"
+          - ".claude/**"
+          - ".git/**"
+          - "Tests/**"
+          - "*.bak"
+          - "*.bak-*"
+          # Servicio local de indexado de libros (Python). No es código de la app y no debe
+          # terminar copiado dentro del bundle — ver Tools/book-rag/README.md.
+          - "Tools/**"
+      - path: Resources/Assets.xcassets
+        type: resource
+    info:
+      path: Resources/Info-Mac.plist
+      properties:
+        NSMicrophoneUsageDescription: "Guitar Practice Lab usa el micrófono para reconocer las notas que tocas durante el entrenamiento del mástil."
+        GPLKeychainAccessGroup: "$(AppIdentifierPrefix)com.guitarpracticelab.credentials"
+    entitlements:
+      path: Resources/GuitarPracticeLab-Mac.entitlements
+      properties:
+        com.apple.security.device.audio-input: true
+        keychain-access-groups:
+          - "$(AppIdentifierPrefix)com.guitarpracticelab.credentials"
+    settings:
+      base:
+        ASSETCATALOG_COMPILER_APPICON_NAME: AppIcon
+        PRODUCT_NAME: GuitarPracticeLab
+        PRODUCT_BUNDLE_IDENTIFIER: com.guitarpracticelab.mac
+        SWIFT_VERSION: "5.0"
+        CODE_SIGN_STYLE: Automatic
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+
+  GuitarPracticeLabTests:
+    type: bundle.unit-test
+    platform: macOS
+    sources:
+      - path: Tests
+    dependencies:
+      - target: GuitarPracticeLab-Mac
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: com.guitarpracticelab.mac.tests
+        # El target se llama GuitarPracticeLab-Mac pero su PRODUCT_NAME es GuitarPracticeLab, así que
+        # el TEST_HOST que deduce xcodegen del nombre del target apunta a una app que no existe.
+        TEST_HOST: "$(BUILT_PRODUCTS_DIR)/GuitarPracticeLab.app/Contents/MacOS/GuitarPracticeLab"
+        BUNDLE_LOADER: "$(TEST_HOST)"
+        SWIFT_VERSION: "5.0"
+        MACOSX_DEPLOYMENT_TARGET: "14.0"
+        GENERATE_INFOPLIST_FILE: YES
+        CODE_SIGN_STYLE: Automatic
+
+schemes:
+  GuitarPracticeLab-Mac:
+    build:
+      targets:
+        GuitarPracticeLab-Mac: all
+        GuitarPracticeLabTests: [test]
+    run:
+      config: Debug
+    test:
+      config: Debug
+      targets:
+        - GuitarPracticeLabTests
