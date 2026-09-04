@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Label</key>
+    <string>ai.guitarpracticelab.book-rag</string>
+
+    <!-- Replace the placeholders before installing this file in ~/Library/LaunchAgents. -->
+    <key>ProgramArguments</key>
+    <array>
+        <string>__PYTHON_PATH__</string>
+        <string>server.py</string>
+    </array>
+
+    <key>WorkingDirectory</key>
+    <string>__BOOK_RAG_DIR__</string>
+
+    <key>EnvironmentVariables</key>
+    <dict>
+        <key>BOOKRAG_CATALOG_DIR</key>
+        <string>__BOOK_CATALOG_DIR__</string>
+    </dict>
+
+    <key>RunAtLoad</key>
+    <true/>
+    <key>KeepAlive</key>
+    <true/>
+    <key>ThrottleInterval</key>
+    <integer>30</integer>
+
+    <key>StandardOutPath</key>
+    <string>__LOG_DIR__/book-rag.log</string>
+    <key>StandardErrorPath</key>
+    <string>__LOG_DIR__/book-rag.error.log</string>
+</dict>
+</plist>
